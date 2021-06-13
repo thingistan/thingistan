@@ -2,8 +2,15 @@ const app = new PIXI.Application({
 	resizeTo: window,
 });
 
-import PeerNetwork from 'https://cdn.jsdelivr.net/gh/yousefamar/p2p-peer/pkg/dist/p2p-peer.es.js';
-//import PeerNetwork from './p2p-peer.es.js';
+//import PeerNetwork from 'https://cdn.jsdelivr.net/gh/yousefamar/p2p-peer/pkg/dist/p2p-peer.es.js';
+import PeerNetwork from '../p2p-peer.es.js';
+import InputManager from './input.js';
+
+const inputManager = new InputManager(app.view);
+
+inputManager.addEventListener('keypress', e => {
+	console.log(e.detail);
+});
 
 const peerNet = new PeerNetwork();
 await peerNet.connect('https://sig.amar.io');
@@ -21,21 +28,6 @@ peerNet.on('uid', uid => {
 });
 
 document.body.appendChild(app.view);
-
-app.view.tabIndex = 1;
-const keyStates = [];
-const keyEnum = {
-	UP: 38,
-	DOWN: 40,
-	LEFT: 37,
-	RIGHT: 39,
-};
-app.view.addEventListener('keydown', event => {
-	keyStates[event.keyCode] = true;
-});
-app.view.addEventListener('keyup', event => {
-	keyStates[event.keyCode] = false;
-});
 
 const moveSpeed = 4;
 
@@ -58,13 +50,13 @@ app.loader.add('bunny', 'mars.png').load((loader, resources) => {
 	app.ticker.add(() => {
 		bunny.prevX = bunny.x;
 		bunny.prevY = bunny.y;
-		if (keyStates[keyEnum.UP])
+		if (inputManager.keyStates[InputManager.keyEnum.UP])
 			bunny.y -= moveSpeed;
-		if (keyStates[keyEnum.DOWN])
+		if (inputManager.keyStates[InputManager.keyEnum.DOWN])
 			bunny.y += moveSpeed;
-		if (keyStates[keyEnum.LEFT])
+		if (inputManager.keyStates[InputManager.keyEnum.LEFT])
 			bunny.x -= moveSpeed;
-		if (keyStates[keyEnum.RIGHT])
+		if (inputManager.keyStates[InputManager.keyEnum.RIGHT])
 			bunny.x += moveSpeed;
 
 		if (bunny.x !== bunny.prevX || bunny.y !== bunny.prevY) {
