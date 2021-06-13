@@ -2,29 +2,14 @@ const app = new PIXI.Application({
 	resizeTo: window,
 });
 
-//import PeerNetwork from 'https://cdn.jsdelivr.net/gh/yousefamar/p2p-peer/pkg/dist/p2p-peer.es.js';
-import PeerNetwork from '../p2p-peer.es.js';
 import InputManager from './input.js';
+import NetworkManager from './network.js';
 
 const inputManager = new InputManager(app.view);
+const networkManager = new NetworkManager('https://sig.amar.io');
 
 inputManager.addEventListener('keypress', e => {
 	console.log(e.detail);
-});
-
-const peerNet = new PeerNetwork();
-await peerNet.connect('https://sig.amar.io');
-
-peerNet.on('connection', peer => {
-	console.log('Peer', peer.uid, 'connected');
-
-	peer.on('state', msg => console.log('Peer', peer.uid + ':', msg));
-
-	peer.on('disconnect', () => console.log('Peer', peer.uid, 'disconnected'));
-});
-
-peerNet.on('uid', uid => {
-	peerNet.join('thingistan.global');
 });
 
 document.body.appendChild(app.view);
@@ -60,7 +45,7 @@ app.loader.add('bunny', 'mars.png').load((loader, resources) => {
 			bunny.x += moveSpeed;
 
 		if (bunny.x !== bunny.prevX || bunny.y !== bunny.prevY) {
-			peerNet.broadcast('state', {
+			networkManager.broadcast('state', {
 				x: bunny.x,
 				y: bunny.y,
 			})
