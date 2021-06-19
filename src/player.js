@@ -11,10 +11,34 @@ export class Player extends Entity {
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
 		this.roundPixels = true;
-		//this.alien.tint = Math.random() * 0xFFFFFF;
+		//this.sprite.tint = Math.random() * 0xFFFFFF;
 		this.sprite.anchor.x = 0.5;
 		this.sprite.anchor.y = 0.5;
 		game.viewport.addChild(this.sprite);
+	}
+}
+
+export class PlayerOther extends Player {
+	peer = null;
+
+	constructor(game, id, x, y, peer) {
+		super(game, id, x, y);
+
+		this.peer = peer;
+
+		peer.on('state', ({ x, y }) => {
+			this.x = x;
+			this.y = y;
+			this.sprite.x = x;
+			this.sprite.y = y;
+		});
+	}
+}
+
+export class PlayerOwn extends Player {
+	constructor(game) {
+		super(game);
+
 		game.viewport.follow(this.sprite, {
 			speed: 5,
 			acceleration: null,
@@ -23,6 +47,8 @@ export class Player extends Entity {
 	}
 
 	tick() {
+		super.tick();
+
 		this.prevX = this.x;
 		this.prevY = this.y;
 		if (this.game.inputManager.keyStates[InputManager.keyEnum.UP])
@@ -34,10 +60,8 @@ export class Player extends Entity {
 		if (this.game.inputManager.keyStates[InputManager.keyEnum.RIGHT])
 			this.x += Player.moveSpeed;
 
-		if (this.sprite) {
-			this.sprite.x = this.x;
-			this.sprite.y = this.y;
-		}
+		this.sprite.x = this.x;
+		this.sprite.y = this.y;
 
 		if (this.x !== this.prevX || this.y !== this.prevY) {
 			this.game.networkManager.broadcast('state', {
@@ -46,9 +70,4 @@ export class Player extends Entity {
 			})
 		}
 	}
-}
-
-export class PlayerOwn extends Player {
-	
-
 }

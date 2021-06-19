@@ -15,6 +15,9 @@ export class Entity {
 		this.x = x;
 		this.y = y;
 	}
+
+	tick() {
+	}
 }
 
 export default class EntityManager {
@@ -27,6 +30,16 @@ export default class EntityManager {
 
 	add(entity) {
 		this.entities.push(entity);
+	}
+
+	remove(entity) {
+		console.log(entity);
+		const index = this.entities.indexOf(entity);
+		if (index < 0)
+			return;
+		this.entities.splice(index, 1);
+		if (entity.sprite)
+			this.game.viewport.removeChild(entity.sprite);
 	}
 
 	tick(...args) {

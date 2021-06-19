@@ -1,7 +1,7 @@
 import InputManager from './input.js';
 import NetworkManager from './network.js';
 import EntityManager from './entity.js';
-import { Player } from './player.js';
+import { PlayerOwn, PlayerOther } from './player.js';
 
 const game = {};
 
@@ -46,7 +46,22 @@ bg.position.y = - window.innerHeight * 5;
 
 game.viewport.addChild(bg);
 
-game.entityManager.add(new Player(game));
+const playerOwn = new PlayerOwn(game);
+
+game.entityManager.add(playerOwn);
+
+game.networkManager.on('connection', peer => {
+	const player = new PlayerOther(game, peer.uid, null, null, peer);
+	game.entityManager.add(player);
+
+	peer.on('disconnect', () => game.entityManager.remove(player));
+	// TODO: Fix memory leak (ref to player through listener after despawn)
+
+	peer.send('state', {
+		x: playerOwn.x,
+		y: playerOwn.y,
+	});
+});
 
 game.inputManager.addEventListener('keypress', e => {
 	console.log(e.detail);
