@@ -35,6 +35,17 @@ game.inputManager   = new InputManager(game);
 game.networkManager = new NetworkManager('https://sig.amar.io');
 game.entityManager  = new EntityManager(game);
 
+const bg = new PIXI.TilingSprite(
+	PIXI.Texture.from('assets/img/bg.png'),
+	window.innerWidth * 10,
+	window.innerHeight * 10,
+);
+
+bg.position.x = - window.innerWidth  * 5;
+bg.position.y = - window.innerHeight * 5;
+
+game.viewport.addChild(bg);
+
 game.entityManager.add(new Player(game));
 
 game.inputManager.addEventListener('keypress', e => {
