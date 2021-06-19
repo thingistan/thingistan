@@ -8,8 +8,10 @@ export default class InputManager extends EventTarget {
 
 	keyStates = [];
 
-	constructor(canvas) {
+	constructor(game) {
 		super();
+
+		const canvas = game.pixi.view;
 
 		canvas.tabIndex = 1;
 		canvas.addEventListener('keydown', event => {

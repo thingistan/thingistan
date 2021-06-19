@@ -1,5 +1,4 @@
-//import PeerNetwork from 'https://cdn.jsdelivr.net/gh/yousefamar/p2p-peer/pkg/dist/p2p-peer.es.js';
-import PeerNetwork from '../p2p-peer.es.js';
+import PeerNetwork from 'https://cdn.jsdelivr.net/gh/yousefamar/p2p-peer/dist/p2p-peer.es.js';
 
 export default class NetworkManager extends PeerNetwork {
 
