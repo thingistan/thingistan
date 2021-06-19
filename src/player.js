@@ -15,6 +15,11 @@ export class Player extends Entity {
 		this.sprite.anchor.x = 0.5;
 		this.sprite.anchor.y = 0.5;
 		game.viewport.addChild(this.sprite);
+		game.viewport.follow(this.sprite, {
+			speed: 5,
+			acceleration: null,
+			radius: 250,
+		});
 	}
 
 	tick() {
