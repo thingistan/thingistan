@@ -3,12 +3,6 @@ import InputManager from './input.js';
 class Player {
 	static moveSpeed = 4;
 
-	x = 0;
-	y = 0;
-	sprite = null;
-
-	game = null;
-
 	constructor(game) {
 		const { pixi } = this.game = game;
 		this.x = pixi.renderer.width  / 2;
@@ -20,7 +14,7 @@ class Player {
 			this.sprite.y = this.y;
 			this.sprite.anchor.x = 0.5;
 			this.sprite.anchor.y = 0.5;
-			pixi.stage.addChild(this.sprite);
+			game.viewport.addChild(this.sprite);
 		});
 	}
 
