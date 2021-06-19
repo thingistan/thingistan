@@ -5,9 +5,12 @@ import { Player } from './player.js';
 
 const game = {};
 
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+
 game.pixi = new PIXI.Application({
 	resizeTo: window,
 	antialias: true,
+	backgroundColor: 0x222222,
 });
 
 // create viewport

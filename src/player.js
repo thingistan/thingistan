@@ -7,14 +7,14 @@ export class Player extends Entity {
 	constructor(game) {
 		super(game);
 
-		game.pixi.loader.add('bunny', 'mars.png').load((loader, resources) => {
-			this.sprite = new PIXI.Sprite(resources.bunny.texture);
-			this.sprite.x = this.x;
-			this.sprite.y = this.y;
-			this.sprite.anchor.x = 0.5;
-			this.sprite.anchor.y = 0.5;
-			game.viewport.addChild(this.sprite);
-		});
+		this.sprite = PIXI.Sprite.from('assets/img/player.png');
+		this.sprite.x = this.x;
+		this.sprite.y = this.y;
+		this.roundPixels = true;
+		//this.alien.tint = Math.random() * 0xFFFFFF;
+		this.sprite.anchor.x = 0.5;
+		this.sprite.anchor.y = 0.5;
+		game.viewport.addChild(this.sprite);
 	}
 
 	tick() {
