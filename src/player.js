@@ -1,14 +1,13 @@
+import { Entity } from './entity.js';
 import InputManager from './input.js';
 
-class Player {
+export class Player extends Entity {
 	static moveSpeed = 4;
 
 	constructor(game) {
-		const { pixi } = this.game = game;
-		this.x = pixi.renderer.width  / 2;
-		this.y = pixi.renderer.height / 2;
+		super(game);
 
-		pixi.loader.add('bunny', 'mars.png').load((loader, resources) => {
+		game.pixi.loader.add('bunny', 'mars.png').load((loader, resources) => {
 			this.sprite = new PIXI.Sprite(resources.bunny.texture);
 			this.sprite.x = this.x;
 			this.sprite.y = this.y;
@@ -44,25 +43,7 @@ class Player {
 	}
 }
 
-class PlayerOwn extends Player {
+export class PlayerOwn extends Player {
 	
 
-}
-
-
-export default class PlayerManager extends EventTarget {
-
-	players = [];
-
-	constructor(game) {
-		super();
-
-		this.players.push(new Player(game));
-	}
-
-	tick(...args) {
-		for (const p of this.players) {
-			p.tick(...args);
-		}
-	}
 }

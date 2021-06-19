@@ -1,6 +1,7 @@
 import InputManager from './input.js';
 import NetworkManager from './network.js';
-import PlayerManager from './player.js';
+import EntityManager from './entity.js';
+import { Player } from './player.js';
 
 const game = {};
 
@@ -24,11 +25,14 @@ viewport
 	.drag()
 	.pinch()
 	.wheel()
-	.decelerate();
+	.decelerate()
+	.moveCenter(0, 0);
 
-game.inputManager = new InputManager(game);
+game.inputManager   = new InputManager(game);
 game.networkManager = new NetworkManager('https://sig.amar.io');
-game.playerManager = new PlayerManager(game);
+game.entityManager  = new EntityManager(game);
+
+game.entityManager.add(new Player(game));
 
 game.inputManager.addEventListener('keypress', e => {
 	console.log(e.detail);
@@ -36,4 +40,4 @@ game.inputManager.addEventListener('keypress', e => {
 
 document.body.appendChild(game.pixi.view);
 
-game.pixi.ticker.add(() => game.playerManager.tick());
+game.pixi.ticker.add(() => game.entityManager.tick());
